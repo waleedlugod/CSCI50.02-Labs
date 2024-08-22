@@ -28,10 +28,9 @@ Xn3 f g fg nand2
 Xn4 abc de fg out nand3
 .ends
 
-Xf clk1 clk2 clk3 clk4 clk5 clk6 clk7 out fx
-
 *******************************************************************************
 * testing graph, feel free to delete
+* Xf clk1 clk2 clk3 clk4 clk5 clk6 clk7 out fx
 * .tran 2000ns
 * .plot Xf.a
 * .plot Xf.b
