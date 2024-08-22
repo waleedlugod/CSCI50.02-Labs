@@ -3,9 +3,8 @@
 .include "stdcell.jsim"
 
 .subckt fx a b c d e f g out
+Xn1 a b c abc nand3
+Xn2 d e de nand2
+Xn3 f g fg nand2
+Xn4 abc de fg out nand3
 .ends
-
-
-.tran 10ns
-.plot clk1
-.plot out
