@@ -1,10 +1,44 @@
+* Lugod, Waleed
+* Sagusay, Joseph
+* Warain, John Victor
 .include "8clocks.jsim"
 .include "nominal.jsim"
 .include "stdcell.jsim"
 
+*******************************************************************************
+* defines subcircuit fx with inputs a-g and output out
+*
+* The original definition of fx only uses ANDs and ORs which would be:
+*
+* Xn1 a b c abc and3
+* Xn2 d e de and2
+* Xn3 f g fg and2
+* Xn4 abc de fg out or3
+*
+* In order to convert the circuit to only use NAND gates, we simply convert the
+* AND gates to NANDs. To conserve the original logic, we then negate the
+* outputs of the NANDs. Since the inputs of the OR gate are now all inverted,
+* we can change this gate to an equivalent NAND gate. This creates a circuit
+* where all gates are NANDs.
+*******************************************************************************
 .subckt fx a b c d e f g out
 Xn1 a b c abc nand3
 Xn2 d e de nand2
 Xn3 f g fg nand2
 Xn4 abc de fg out nand3
 .ends
+
+Xf clk1 clk2 clk3 clk4 clk5 clk6 clk7 out fx
+
+*******************************************************************************
+* testing graph, feel free to delete
+* .tran 2000ns
+* .plot Xf.a
+* .plot Xf.b
+* .plot Xf.c
+* .plot Xf.d
+* .plot Xf.e
+* .plot Xf.f
+* .plot Xf.g
+* .plot out
+*******************************************************************************
