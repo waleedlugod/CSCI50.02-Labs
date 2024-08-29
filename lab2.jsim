@@ -8,7 +8,7 @@
 *******************************************************************************
 * The task of a full adder is to add three bits: input1, input2, & cin.
 * We know that a half adder can only add two bits and yield two outputs.
-* Therefoe, to create a full adder, we can just use two half adders.
+* Therefore, to create a full adder, we can just use two half adders.
 *
 * We first "half add" the first two inputs, say A and B, and get the resulting
 * sum bit. The sum bit is then "half added" to cin, and the resulting sum of
@@ -31,16 +31,6 @@ Xsub1 a b tsum t1cout halfAdder
 Xsub2 tsum cin fsum t2cout halfAdder
 Xsub3 t1cout t2cout fcout nand2
 .ends
-
-Xtest clk1 clk2 clk3 sum cout fa
-
-.tran 40ns
-.plot clk1
-.plot clk2
-.plot clk3
-.plot sum
-.plot cout
-
 
 *******************************************************************************
 * defines subcircuit fx with inputs a-g and output out
@@ -66,15 +56,27 @@ Xn4 abc de fg out nand3
 .ends
 
 *******************************************************************************
-* testing graph, feel free to delete
-* Xf clk1 clk2 clk3 clk4 clk5 clk6 clk7 out fx
-* .tran 2000ns
-* .plot Xf.a
-* .plot Xf.b
-* .plot Xf.c
-* .plot Xf.d
-* .plot Xf.e
-* .plot Xf.f
-* .plot Xf.g
-* .plot out
+*Listed below are the graphs of fa and fx. 
+*
+*Since there are 7 clocks, we use a clock period of 640 ns so that clk7 may finish one cycle. 
+*The period of 640 ns is derived by by multiplying 2^6 by 10 ns. 
+
+Xfx clk1 clk2 clk3 clk4 clk5 clk6 clk7 out fx
+
+.tran 640ns
+
+.plot clk1
+.plot clk2
+.plot clk3
+.plot clk4
+.plot clk5
+.plot clk6
+.plot clk7
+.plot out
+
+Xfa clk5 clk6 clk7 sum carry fa
+
+.plot sum
+.plot carry
+
 *******************************************************************************
