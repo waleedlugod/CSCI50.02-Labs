@@ -5,20 +5,22 @@
 .include "nominal.jsim"
 .include "stdcell.jsim"
 
-**********************************************************
+*******************************************************************************
 * The task of a full adder is to add three bits: input1, input2, & cin.
 * We know that a half adder can only add two bits and yield two outputs.
 * Therefoe, to create a full adder, we can just use two half adders.
 *
-* We first "half add" the first two inputs, say A and B, and get the resulting sum bit.
-* The sum bit is then "half added" to cin, and the resulting sum of this is the sum of the full adder.
+* We first "half add" the first two inputs, say A and B, and get the resulting
+* sum bit. The sum bit is then "half added" to cin, and the resulting sum of
+* this is the sum of the full adder.
 
-* Meanwhile, if any of the couts of the the two half adders yield a 1, then we know that the cout of the full adder is also a 1. 
-* The above statement used two AND gates and one OR gate.
-* The AND and OR gates were converted to NAND gates using the "bubble technique."
+* Meanwhile, if any of the couts of the the two half adders yield a 1, then we
+* know that the cout of the full adder is also a 1. The above statement used
+* two AND gates and one OR gate. The AND and OR gates were converted to NAND
+* gates using the "bubble technique."
 *
-*The implementation of this is shown below.
-**********************************************************
+* The implementation of this is shown below.
+*******************************************************************************
 .subckt halfAdder a b sum cout
 Xsub1 a b sum xor2
 Xsub2 a b cout nand2
@@ -40,3 +42,39 @@ Xtest clk1 clk2 clk3 sum cout fa
 .plot cout
 
 
+*******************************************************************************
+* defines subcircuit fx with inputs a-g and output out
+*
+* The original definition of fx only uses ANDs and ORs which would be:
+*
+* Xn1 a b c abc and3
+* Xn2 d e de and2
+* Xn3 f g fg and2
+* Xn4 abc de fg out or3
+*
+* In order to convert the circuit to only use NAND gates, we simply convert the
+* AND gates to NANDs. To conserve the original logic, we then negate the
+* outputs of the NANDs. Since the inputs of the OR gate are now all inverted,
+* we can change this gate to an equivalent NAND gate. This creates a circuit
+* where all gates are NANDs.
+*******************************************************************************
+.subckt fx a b c d e f g out
+Xn1 a b c abc nand3
+Xn2 d e de nand2
+Xn3 f g fg nand2
+Xn4 abc de fg out nand3
+.ends
+
+*******************************************************************************
+* testing graph, feel free to delete
+* Xf clk1 clk2 clk3 clk4 clk5 clk6 clk7 out fx
+* .tran 2000ns
+* .plot Xf.a
+* .plot Xf.b
+* .plot Xf.c
+* .plot Xf.d
+* .plot Xf.e
+* .plot Xf.f
+* .plot Xf.g
+* .plot out
+*******************************************************************************
