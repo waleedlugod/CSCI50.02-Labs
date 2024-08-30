@@ -6,33 +6,6 @@
 .include "stdcell.jsim"
 
 *******************************************************************************
-* The task of a full adder is to add three bits: input1, input2, & carry_in.
-* We know that a half adder can only add two bits and yield two outputs.
-* Therefore, to create a full adder, we can just use two half adders.
-*
-* We first "half add" the first two inputs, say A and B, and get the resulting
-* sum bit. The sum bit is then "half added" to carry_in, and the resulting sum
-* of this is the sum of the full adder.
-
-* Meanwhile, if any of the couts of the the two half adders yield a 1, then we
-* know that the cout of the full adder is also a 1. The above statement used
-* two AND gates and one OR gate. The AND and OR gates were converted to NAND
-* gates using the "bubble technique."
-*
-* The implementation of this is shown below.
-*******************************************************************************
-.subckt halfAdder a b sum cout
-Xsub1 a b sum xor2
-Xsub2 a b cout nand2
-.ends
-
-.subckt fa a b carry_in fsum fcout
-Xsub1 a b tsum t1cout halfAdder
-Xsub2 tsum carry_in fsum t2cout halfAdder
-Xsub3 t1cout t2cout fcout nand2
-.ends
-
-*******************************************************************************
 * defines subcircuit fx with inputs a-g and output out
 *
 * The original definition of fx only uses ANDs and ORs which would be:
@@ -46,14 +19,53 @@ Xsub3 t1cout t2cout fcout nand2
 * AND gates to NANDs. To conserve the original logic, we then negate the
 * outputs of the NANDs. Since the inputs of the OR gate are now all inverted,
 * we can change this gate to an equivalent NAND gate. This creates a circuit
-* where all gates are NANDs.
+* where all gates are NANDs. This is called the "bubble technique."
 *******************************************************************************
+
 .subckt fx a b c d e f g out
 Xn1 a b c abc nand3
 Xn2 d e de nand2
 Xn3 f g fg nand2
 Xn4 abc de fg out nand3
 .ends
+
+
+*******************************************************************************
+* The task of a full adder is to add three bits: input1, input2, & carry_in.
+* We know that a half adder can only add two bits and yield two outputs.
+* Therefore, to create a full adder, we can just use two half adders.
+*
+* We first "half add" the first two inputs, say A and B, and get the resulting
+* sum bit. The sum bit is then "half added" to carry_in, and the resulting sum
+* of this is the sum of the full adder.
+
+* Meanwhile, if any of the couts of the the two half adders yield a 1, then we
+* know that the cout of the full adder is also a 1, which is why we added an OR gate that takes in 
+* the cout of the two half adders. Below is the implementation of a normal full adder.
+
+*.subckt fa a b carry_in fsum fcout
+*Xsub1 a b tsum xor2
+*Xsub2 a b t1cout and2
+*Xsub3 tsum carry_in fsum xor2
+*Xsub4 tsum carry_in t2cout and2
+*Xsub5 t1cout t2cout fcout or2
+*.ends
+
+
+* The above circuit used two AND gates and one OR gate. 
+* We can convert then into NAND gates using the "bubble technique."
+*
+* The implementation of this is shown below using a single subcircuit.
+*******************************************************************************
+
+.subckt fa a b carry_in fsum fcout
+Xsub1 a b tsum xor2
+Xsub2 a b t1cout nand2
+Xsub3 tsum carry_in fsum xor2
+Xsub4 tsum carry_in t2cout nand2
+Xsub5 t1cout t2cout fcout nand2
+.ends
+
 
 *******************************************************************************
 * Listed below are the graphs of fa and fx. 
