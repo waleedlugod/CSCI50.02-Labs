@@ -6,13 +6,13 @@
 .include "stdcell.jsim"
 
 *******************************************************************************
-* The task of a full adder is to add three bits: input1, input2, & cin.
+* The task of a full adder is to add three bits: input1, input2, & carry_in.
 * We know that a half adder can only add two bits and yield two outputs.
 * Therefore, to create a full adder, we can just use two half adders.
 *
 * We first "half add" the first two inputs, say A and B, and get the resulting
-* sum bit. The sum bit is then "half added" to cin, and the resulting sum of
-* this is the sum of the full adder.
+* sum bit. The sum bit is then "half added" to carry_in, and the resulting sum
+* of this is the sum of the full adder.
 
 * Meanwhile, if any of the couts of the the two half adders yield a 1, then we
 * know that the cout of the full adder is also a 1. The above statement used
@@ -26,9 +26,9 @@ Xsub1 a b sum xor2
 Xsub2 a b cout nand2
 .ends
 
-.subckt fa a b cin fsum fcout
+.subckt fa a b carry_in fsum fcout
 Xsub1 a b tsum t1cout halfAdder
-Xsub2 tsum cin fsum t2cout halfAdder
+Xsub2 tsum carry_in fsum t2cout halfAdder
 Xsub3 t1cout t2cout fcout nand2
 .ends
 
@@ -56,10 +56,11 @@ Xn4 abc de fg out nand3
 .ends
 
 *******************************************************************************
-*Listed below are the graphs of fa and fx. 
+* Listed below are the graphs of fa and fx. 
 *
-*Since there are 7 clocks, we use a clock period of 640 ns so that clk7 may finish one cycle. 
-*The period of 640 ns is derived by by multiplying 2^6 by 10 ns. 
+* Since there are 7 clocks, we use a clock period of 640 ns so that clk7 may
+* finish one cycle. The period of 640 ns is derived by multiplying 2^6 by 10 ns. 
+*******************************************************************************
 
 Xfx clk1 clk2 clk3 clk4 clk5 clk6 clk7 out fx
 
@@ -78,5 +79,3 @@ Xfa clk5 clk6 clk7 sum carry fa
 
 .plot sum
 .plot carry
-
-*******************************************************************************
