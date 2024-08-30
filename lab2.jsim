@@ -1,68 +1,95 @@
-*******************************************************************************
-* All lines that begin with * are comments. You may safely remove them for your
-* own submissions, but as with any programming exercise, please put in your own
-* comments to explain your code!
-*******************************************************************************
-
-
-*******************************************************************************
-* The following .include lines are necessary for all your CSCI 50.02 JSim
-* exercises. These work like your Java import statement.
-*******************************************************************************
-
+* Lugod, Waleed
+* Sagusay, Joseph
+* Warain, John Victor
 .include "8clocks.jsim"
 .include "nominal.jsim"
 .include "stdcell.jsim"
 
-
 *******************************************************************************
-* What follows is a (one-line) statement that describes our first "Hello
-* World!" circuit. This statement is in the form:
+* defines subcircuit fx with inputs a-g and output out
 *
-*   Xid a z inverter
+* The original definition of fx only uses ANDs and ORs which would be:
 *
-* Xid is just the name we give to this circuit block (in this case, Xinv).
-* a is an input node ("clk1" is a 10ns-period clock defined in 8clocks.jsim).
-* z is an output node (the name "out" is just something we made up).
-* inverter is the type of subcircuit that we want (defined in stdcell.jsim).
-*******************************************************************************
-
-Xinv clk1 out inverter
-
-
-*******************************************************************************
-* The circuit above does NOT display anything in the simulator. We tell JSim
-* to display something via .tran and .plot commands. The .tran statement
-* specifies the period of time (the "transient") that we want to plot.
-* Afterwards, we just .plot the nodes that we are interested in.
+* Xn1 a b c abc and3
+* Xn2 d e de and2
+* Xn3 f g fg and2
+* Xn4 abc de fg out or3
 *
-* In this example, we plot the input and the output of the Xinv circuit in two
-* separate "plot channels". (You can plot both signals in one channel by saying
-* ".plot clk1 out" instead, but it will be hard to see any overlaps in signal.)
+* In order to convert the circuit to only use NAND gates, we simply convert the
+* AND gates to NANDs. To conserve the original logic, we then negate the
+* outputs of the NANDs. Since the inputs of the OR gate are now all inverted,
+* we can change this gate to an equivalent NAND gate. This creates a circuit
+* where all gates are NANDs. This is called the "bubble technique."
 *******************************************************************************
 
-.tran 10ns
+.subckt fx a b c d e f g out
+Xn1 a b c abc nand3
+Xn2 d e de nand2
+Xn3 f g fg nand2
+Xn4 abc de fg out nand3
+.ends
+
+
+*******************************************************************************
+* The task of a full adder is to add three bits: input1, input2, & carry_in.
+* We know that a half adder can only add two bits and yield two outputs.
+* Therefore, to create a full adder, we can just use two half adders.
+*
+* We first "half add" the first two inputs, say A and B, and get the resulting
+* sum bit. The sum bit is then "half added" to carry_in, and the resulting sum
+* of this is the sum of the full adder.
+*
+* Meanwhile, if any of the couts of the the two half adders yield a 1, then we
+* know that the cout of the full adder is also a 1, which is why we added an OR
+* gate that takes in the cout of the two half adders. Below is the
+* implementation of a normal full adder.
+*
+* .subckt fa a b carry_in fsum fcout
+* Xsub1 a b tsum xor2
+* Xsub2 a b t1cout and2
+* Xsub3 tsum carry_in fsum xor2
+* Xsub4 tsum carry_in t2cout and2
+* Xsub5 t1cout t2cout fcout or2
+* .ends
+*
+*
+* The above circuit used two AND gates and one OR gate. 
+* We can convert then into NAND gates using the "bubble technique."
+*
+* The implementation of this is shown below using a single subcircuit.
+*******************************************************************************
+
+.subckt fa a b carry_in fsum fcout
+Xsub1 a b tsum xor2
+Xsub2 a b t1cout nand2
+Xsub3 tsum carry_in fsum xor2
+Xsub4 tsum carry_in t2cout nand2
+Xsub5 t1cout t2cout fcout nand2
+.ends
+
+
+*******************************************************************************
+* Listed below are the graphs of fa and fx. 
+*
+* Since there are 7 clocks, we use a clock period of 640 ns so that clk7 may
+* finish one cycle. The period of 640 ns is derived by multiplying 2^6 by
+* 10 ns. 
+*******************************************************************************
+
+Xfx clk1 clk2 clk3 clk4 clk5 clk6 clk7 out fx
+
+.tran 640ns
+
 .plot clk1
+.plot clk2
+.plot clk3
+.plot clk4
+.plot clk5
+.plot clk6
+.plot clk7
 .plot out
 
+Xfa clk5 clk6 clk7 sum carry fa
 
-*******************************************************************************
-* To actually see these plots, click the "Gate-level Simulation" button on the
-* toolbar (fourth button from the right, the one that looks like an AND gate).
-* This opens a separate Plot Window.
-*
-* While these .jsim files need to be opened in JSim to perform the simulations,
-* we HIGHLY recommend that you edit these files in a full-fledged text editor
-* instead of from within JSim's own editor, because the JSim editor does NOT
-* have undo/redo functions. I personally recommend Visual Studio Code:
-*
-*   https://code.visualstudio.com/
-*
-* Then, when you want to see your changes on the Plot Window, simply click the
-* "Reload Files" button (the button with the green looping arrows on a sheet of
-* paper), then re-simulate by clicking the "Gate-level Simulation" button (the
-* Plot Window has its own). It is NOT enough to click just one of the two
-* buttons -- you have to click Reload, then Simulation, in that order!
-*
-* Happy hacking! - eric
-*******************************************************************************
+.plot sum
+.plot carry
