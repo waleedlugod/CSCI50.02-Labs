@@ -38,20 +38,21 @@ Xn4 abc de fg out nand3
 * We first "half add" the first two inputs, say A and B, and get the resulting
 * sum bit. The sum bit is then "half added" to carry_in, and the resulting sum
 * of this is the sum of the full adder.
-
+*
 * Meanwhile, if any of the couts of the the two half adders yield a 1, then we
-* know that the cout of the full adder is also a 1, which is why we added an OR gate that takes in 
-* the cout of the two half adders. Below is the implementation of a normal full adder.
-
-*.subckt fa a b carry_in fsum fcout
-*Xsub1 a b tsum xor2
-*Xsub2 a b t1cout and2
-*Xsub3 tsum carry_in fsum xor2
-*Xsub4 tsum carry_in t2cout and2
-*Xsub5 t1cout t2cout fcout or2
-*.ends
-
-
+* know that the cout of the full adder is also a 1, which is why we added an OR
+* gate that takes in the cout of the two half adders. Below is the
+* implementation of a normal full adder.
+*
+* .subckt fa a b carry_in fsum fcout
+* Xsub1 a b tsum xor2
+* Xsub2 a b t1cout and2
+* Xsub3 tsum carry_in fsum xor2
+* Xsub4 tsum carry_in t2cout and2
+* Xsub5 t1cout t2cout fcout or2
+* .ends
+*
+*
 * The above circuit used two AND gates and one OR gate. 
 * We can convert then into NAND gates using the "bubble technique."
 *
@@ -71,7 +72,8 @@ Xsub5 t1cout t2cout fcout nand2
 * Listed below are the graphs of fa and fx. 
 *
 * Since there are 7 clocks, we use a clock period of 640 ns so that clk7 may
-* finish one cycle. The period of 640 ns is derived by multiplying 2^6 by 10 ns. 
+* finish one cycle. The period of 640 ns is derived by multiplying 2^6 by
+* 10 ns. 
 *******************************************************************************
 
 Xfx clk1 clk2 clk3 clk4 clk5 clk6 clk7 out fx
