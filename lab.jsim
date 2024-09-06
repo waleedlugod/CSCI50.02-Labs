@@ -1,4 +1,4 @@
 .include "header.jsim"
 
-.subckt add32 a[31:0] b[31:0] c_in sum[31:0] c_in[31:30]
+.subckt add32 a[31:0] b[31:0] c_in sum[31:0] c_out[31:30]
 .ends
