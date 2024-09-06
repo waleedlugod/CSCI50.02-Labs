@@ -1,1 +1,10 @@
 .include "header.jsim"
+
+*******************************************************************************
+* 32-bit adder
+* Constructed by connecting the carry of a full adder to the succeeding full
+* adder.
+*******************************************************************************
+.subckt add32 a[31:0] b[31:0] c_in0 sum[31:0] c_out[31:30]
+Xsum a[31:0] b[31:0] c_out[30:0] c_in0 sum[31:0] c_out[31:0] fa
+.ends
