@@ -9,39 +9,15 @@
 Xsum a[31:0] b[31:0] c_out[30:0] c_in0 sum[31:0] c_out[31:0] fa
 .ends
 
-Wa1 a1[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns) 
-+ 0x00000000
-Wb1 b1[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns) 
-+ 0x00000000
-Wa2 a2[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns) 
-+ 0x55555555
-Wb2 b2[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
-+ 0x00000000
-Wa3 a3[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns) 
-+ 0x00000000
-Wb3 b3[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
-+ 0x55555555
-Wa4 a4[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns) 
-+ 0xFFFFFFFF
-Wb4 b4[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
-+ 0xFFFFFFFF
+Wa a[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns) 
++ 0x00000000 0x55555555 0x00000000 0x55555555 0xFFFFFFFF 0xAAAAAAAA 0x00000000 0xAAAAAAAA 0x00000001 0xFFFFFFFF 
+Wb b[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns) 
++ 0x00000000 0x00000000 0x55555555 0x55555555 0xFFFFFFFF 0x00000000 0xAAAAAAAA 0xAAAAAAAA 0xFFFFFFFF 0x00000001
 
+Xsum a[31:0] b[31:0] 0 sum[31:0] c31 c30 add32
+	
 
-Xsum1 a1[31:0] b1[31:0] 0 sum1[31:0] c131 c130 add32
-Xsum2 a2[31:0] b2[31:0] 0 sum2[31:0] c231 c230 add32
-Xsum3 a3[31:0] b3[31:0] 0 sum3[31:0] c331 c330 add32
-Xsum4 a4[31:0] b4[31:0] 0 sum4[31:0] c431 c430 add32
-
-.tran 1280ns
-.plot a1[31:0]
-.plot b1[31:0]
-.plot sum1[31:0]
-.plot a2[31:0]
-.plot b2[31:0]
-.plot sum2[31:0]
-.plot a3[31:0]
-.plot b3[31:0]
-.plot sum3[31:0]
-.plot a4[31:0]
-.plot b4[31:0]
-.plot sum4[31:0]
+.tran 10240ns
+.plot a[31:0]
+.plot b[31:0]
+.plot sum[31:0]
