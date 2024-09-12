@@ -2,38 +2,3 @@
 "Sagusay, Joseph"
 "Warain, John Victor"
 .include "header.jsim"
-
-*******************************************************************************
-* 32-bit adder
-* Constructed by connecting the carry of a full adder to the succeeding full
-* adder.
-*******************************************************************************
-.subckt add32 a[31:0] b[31:0] c_in0 sum[31:0] c_out[31:30]
-Xsum a[31:0] b[31:0] c_out[30:0] c_in0 sum[31:0] c_out[31:0] fa
-.ends
-
-Wa a[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns) 
-+ 0x00000000 0x55555555 0x00000000 0x55555555 0xFFFFFFFF 0xAAAAAAAA 0x00000000 0xAAAAAAAA 0x00000001 0xFFFFFFFF 
-Wb b[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns) 
-+ 0x00000000 0x00000000 0x55555555 0x55555555 0xFFFFFFFF 0x00000000 0xAAAAAAAA 0xAAAAAAAA 0xFFFFFFFF 0x00000001
-
-Xsum a[31:0] b[31:0] 0 sum[31:0] c31 c30 add32
-	
-*******************************************************************************
-* There is a long transition delay in the last two test cases because the carry
-* of 1 needs to ripple through all 32 bits. This ripple effect means each bit
-* waits for the carry from the previous bit before it can compute its result.   
-* In contrast, other cases have short delays because they don't have carries or
-* have a carry pattern which can make the sum easier to obtain. In the case of
-* 0xFFFFFFFF + 0xFFFFFFFF, they do not have this long transition delay because
-* every stage has a carry-out of 1. Since the carryout is always 1, it doesn't
-* need to wait for the propagating carry-ins to be valid, causing minimal delay. 
-* Cases like 0x00000001 + 0xFFFFFFFF and 0xFFFFFFFF + 0x00000001 however, have
-* to wait for the first carry to propagate through the bits and update the
-* carry-ins, causing the long transition delay.
-*******************************************************************************
-
-.tran 10240ns
-.plot a[31:0]
-.plot b[31:0]
-.plot sum[31:0]
