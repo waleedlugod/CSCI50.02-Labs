@@ -1,3 +1,6 @@
+"Lugod, Waleed"
+"Sagusay, Joseph"
+"Warain, John Victor"
 .include "header.jsim"
 
 *******************************************************************************
@@ -16,6 +19,19 @@ Wb b[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
 
 Xsum a[31:0] b[31:0] 0 sum[31:0] c31 c30 add32
 	
+*******************************************************************************
+* There is a long transition delay in the last two test cases because the carry
+* of 1 needs to ripple through all 32 bits. This ripple effect means each bit
+* waits for the carry from the previous bit before it can compute its result.   
+* In contrast, other cases have short delays because they don't have carries or
+* have a carry pattern which can make the sum easier to obtain. In the case of
+* 0xFFFFFFFF + 0xFFFFFFFF, they do not have this long transition delay because
+* every stage has a carry-out of 1. Since the carryout is always 1, it doesn't
+* need to wait for the propagating carry-ins to be valid, causing minimal delay. 
+* Cases like 0x00000001 + 0xFFFFFFFF and 0xFFFFFFFF + 0x00000001 however, have
+* to wait for the first carry to propagate through the bits and update the
+* carry-ins, causing the long transition delay.
+*******************************************************************************
 
 .tran 10240ns
 .plot a[31:0]
