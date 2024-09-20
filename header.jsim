@@ -1,6 +1,6 @@
-"Lugod, Waleed"
-"Sagusay, Joseph"
-"Warain, John Victor"
+* "Lugod, Waleed"
+* "Sagusay, Joseph"
+* "Warain, John Victor"
 .include "8clocks.jsim"
 .include "nominal.jsim"
 .include "stdcell.jsim"
@@ -140,7 +140,7 @@ Xsum a[31:0] b[31:0] c_out[30:0] c_in0 sum[31:0] c_out[31:0] fa
 * to wait for the first carry to propagate through the bits and update the
 * carry-ins, causing the long transition delay.
 *******************************************************************************
-* .tran 10240ns
+* .tran 200ns
 * .plot a[31:0]
 * .plot b[31:0]
 * .plot sum[31:0]
