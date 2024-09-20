@@ -1,6 +1,12 @@
+<<<<<<< Updated upstream
 * "Lugod, Waleed"
 * "Sagusay, Joseph"
 * "Warain, John Victor"
+=======
+*"Lugod, Waleed"
+*"Sagusay, Joseph"
+*"Warain, John Victor"
+>>>>>>> Stashed changes
 .include "8clocks.jsim"
 .include "nominal.jsim"
 .include "stdcell.jsim"
@@ -81,6 +87,11 @@ Xsub5 t1cout t2cout fcout nand2
 * finish one cycle. The period of 640 ns is derived by multiplying 2^6 by
 * 10 ns. 
 *******************************************************************************
+
+.subckt add32 a[31:0] b[31:0] c_in0 sum[31:0] c_out[31:30]
+Xsum a[31:0] b[31:0] c_out[30:0] c_in0 sum[31:0] c_out[31:0] fa
+.ends
+
 *
 * Xfx clk1 clk2 clk3 clk4 clk5 clk6 clk7 out fx
 * 
