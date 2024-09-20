@@ -1,39 +1,14 @@
-<<<<<<< Updated upstream
-* "Lugod, Waleed"
-* "Sagusay, Joseph"
-* "Warain, John Victor"
-=======
 *"Lugod, Waleed"
 *"Sagusay, Joseph"
 *"Warain, John Victor"
->>>>>>> Stashed changes
 .include "8clocks.jsim"
 .include "nominal.jsim"
 .include "stdcell.jsim"
 
 
-
 *******************************************************************************
-* LAB 2
+* Random circuit
 *******************************************************************************
-
-*******************************************************************************
-* defines subcircuit fx with inputs a-g and output out
-*
-* The original definition of fx only uses ANDs and ORs which would be:
-*
-* Xn1 a b c abc and3
-* Xn2 d e de and2
-* Xn3 f g fg and2
-* Xn4 abc de fg out or3
-*
-* In order to convert the circuit to only use NAND gates, we simply convert the
-* AND gates to NANDs. To conserve the original logic, we then negate the
-* outputs of the NANDs. Since the inputs of the OR gate are now all inverted,
-* we can change this gate to an equivalent NAND gate. This creates a circuit
-* where all gates are NANDs. This is called the "bubble technique."
-*******************************************************************************
-
 .subckt fx a b c d e f g out
 Xn1 a b c abc nand3
 Xn2 d e de nand2
@@ -43,34 +18,8 @@ Xn4 abc de fg out nand3
 
 
 *******************************************************************************
-* The task of a full adder is to add three bits: input1, input2, & carry_in.
-* We know that a half adder can only add two bits and yield two outputs.
-* Therefore, to create a full adder, we can just use two half adders.
-*
-* We first "half add" the first two inputs, say A and B, and get the resulting
-* sum bit. The sum bit is then "half added" to carry_in, and the resulting sum
-* of this is the sum of the full adder.
-*
-* Meanwhile, if any of the couts of the the two half adders yield a 1, then we
-* know that the cout of the full adder is also a 1, which is why we added an OR
-* gate that takes in the cout of the two half adders. Below is the
-* implementation of a normal full adder.
-*
-* .subckt fa a b carry_in fsum fcout
-* Xsub1 a b tsum xor2
-* Xsub2 a b t1cout and2
-* Xsub3 tsum carry_in fsum xor2
-* Xsub4 tsum carry_in t2cout and2
-* Xsub5 t1cout t2cout fcout or2
-* .ends
-*
-*
-* The above circuit used two AND gates and one OR gate. 
-* We can convert then into NAND gates using the "bubble technique."
-*
-* The implementation of this is shown below using a single subcircuit.
+* Full Adder
 *******************************************************************************
-
 .subckt fa a b carry_in fsum fcout
 Xsub1 a b tsum xor2
 Xsub2 a b t1cout nand2
@@ -81,78 +30,8 @@ Xsub5 t1cout t2cout fcout nand2
 
 
 *******************************************************************************
-* Listed below are the graphs of fa and fx. 
-*
-* Since there are 7 clocks, we use a clock period of 640 ns so that clk7 may
-* finish one cycle. The period of 640 ns is derived by multiplying 2^6 by
-* 10 ns. 
-*******************************************************************************
-
-.subckt add32 a[31:0] b[31:0] c_in0 sum[31:0] c_out[31:30]
-Xsum a[31:0] b[31:0] c_out[30:0] c_in0 sum[31:0] c_out[31:0] fa
-.ends
-
-*
-* Xfx clk1 clk2 clk3 clk4 clk5 clk6 clk7 out fx
-* 
-* .tran 640ns
-* 
-* .plot clk1
-* .plot clk2
-* .plot clk3
-* .plot clk4
-* .plot clk5
-* .plot clk6
-* .plot clk7
-* .plot out
-* 
-* Xfa clk5 clk6 clk7 sum carry fa
-* 
-* .plot sum
-* .plot carry
-*******************************************************************************
-
-
-
-*******************************************************************************
-* LAB 3
-*******************************************************************************
-
-*******************************************************************************
-* 32-bit adder
-* Constructed by connecting the carry of a full adder to the succeeding full
-* adder.
+* 32-bit Adder
 *******************************************************************************
 .subckt add32 a[31:0] b[31:0] c_in0 sum[31:0] c_out[31:30]
 Xsum a[31:0] b[31:0] c_out[30:0] c_in0 sum[31:0] c_out[31:0] fa
 .ends
-
-*******************************************************************************
-* Wa a[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns) 
-* + 0x00000000 0x55555555 0x00000000 0x55555555 0xFFFFFFFF 0xAAAAAAAA 0x00000000
-* + 0xAAAAAAAA 0x00000001 0xFFFFFFFF 
-* Wb b[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns) 
-* + 0x00000000 0x00000000 0x55555555 0x55555555 0xFFFFFFFF 0x00000000 0xAAAAAAAA
-* + 0xAAAAAAAA 0xFFFFFFFF 0x00000001
-* 
-* Xsum a[31:0] b[31:0] 0 sum[31:0] c31 c30 add32
-*******************************************************************************
-	
-*******************************************************************************
-* There is a long transition delay in the last two test cases because the carry
-* of 1 needs to ripple through all 32 bits. This ripple effect means each bit
-* waits for the carry from the previous bit before it can compute its result.   
-* In contrast, other cases have short delays because they don't have carries or
-* have a carry pattern which can make the sum easier to obtain. In the case of
-* 0xFFFFFFFF + 0xFFFFFFFF, they do not have this long transition delay because
-* every stage has a carry-out of 1. Since the carryout is always 1, it doesn't
-* need to wait for the propagating carry-ins to be valid, causing minimal delay. 
-* Cases like 0x00000001 + 0xFFFFFFFF and 0xFFFFFFFF + 0x00000001 however, have
-* to wait for the first carry to propagate through the bits and update the
-* carry-ins, causing the long transition delay.
-*******************************************************************************
-* .tran 200ns
-* .plot a[31:0]
-* .plot b[31:0]
-* .plot sum[31:0]
-* ******************************************************************************
