@@ -35,3 +35,12 @@ Xsub5 t1cout t2cout fcout nand2
 .subckt add32 a[31:0] b[31:0] c_in0 sum[31:0] c_out[31:30]
 Xsum a[31:0] b[31:0] c_out[30:0] c_in0 sum[31:0] c_out[31:0] fa
 .ends
+
+*******************************************************************************
+* 32-bit Counter
+*******************************************************************************
+.subckt counter32 reset a[31:0] f[31:0] clk
+Xtest a[31:0] f[31:0] 0 sum[31:0] c_out[31:30] add32
+Xtest1 reset#32 sum[31:0] 0#32 z[31:0] mux2
+Xtest2 z[31:0] clk#32 f[31:0] dreg
+.ends
