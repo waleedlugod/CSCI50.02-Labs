@@ -1,0 +1,46 @@
+*"Lugod, Waleed"
+*"Sagusay, Joseph"
+*"Warain, John Victor"
+.include "8clocks.jsim"
+.include "nominal.jsim"
+.include "stdcell.jsim"
+
+
+*******************************************************************************
+* Random circuit
+*******************************************************************************
+.subckt fx a b c d e f g out
+Xn1 a b c abc nand3
+Xn2 d e de nand2
+Xn3 f g fg nand2
+Xn4 abc de fg out nand3
+.ends
+
+
+*******************************************************************************
+* Full Adder
+*******************************************************************************
+.subckt fa a b carry_in fsum fcout
+Xsub1 a b tsum xor2
+Xsub2 a b t1cout nand2
+Xsub3 tsum carry_in fsum xor2
+Xsub4 tsum carry_in t2cout nand2
+Xsub5 t1cout t2cout fcout nand2
+.ends
+
+
+*******************************************************************************
+* 32-bit Adder
+*******************************************************************************
+.subckt add32 a[31:0] b[31:0] c_in0 sum[31:0] c_out[31:30]
+Xsum a[31:0] b[31:0] c_out[30:0] c_in0 sum[31:0] c_out[31:0] fa
+.ends
+
+*******************************************************************************
+* 32-bit Counter
+*******************************************************************************
+.subckt counter32 reset a[31:0] f[31:0] clk
+Xsub1 a[31:0] f[31:0] 0 sum[31:0] c_out[31:30] add32
+Xsub2 reset#32 sum[31:0] 0#32 z[31:0] mux2
+Xsub3 z[31:0] clk#32 f[31:0] dreg
+.ends
