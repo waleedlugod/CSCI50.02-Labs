@@ -1,10 +1,10 @@
 *******************************************************************************
-* Replace this header comment with your names!
-* - Follow "Last Name, First Name" format
-* - Sort alphabetically
+*"Lugod, Waleed"
+*"Sagusay, Joseph"
+*"Warain, John Victor"
 *******************************************************************************
 
-.include "yourHeaderFileHere.jsim"
+.include "header.jsim"
 
 *******************************************************************************
 * It is assumed your new counter32 subcircuit code will be in your header file
