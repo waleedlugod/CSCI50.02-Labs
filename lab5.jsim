@@ -1,0 +1,29 @@
+*******************************************************************************
+*"Lugod, Waleed"
+*"Sagusay, Joseph"
+*"Warain, John Victor"
+*******************************************************************************
+
+.include "header.jsim"
+
+Xas a[31:0] b[31:0] op0 fas[31:0] n v z as32
+
+Wb b[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
++ 0x00000001 0x00000001 0xFFFFFFFF 0xFFFFFFFF 0x5AAAAAAA 0x5AAAAAAA
+
+Wa a[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
++ 0x00000001 0x00000001 0xFFFFFFFF 0xFFFFFFFF 0x5AAAAAAA 0x5AAAAAAA
+
+Wop op0 nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
++ 0 1 0 1 0 1
+
+*******************************************************************************
+
+.tran 300ns
+.plot a[31:0]
+.plot b[31:0]
+.plot op0
+.plot n
+.plot v
+.plot z
+.plot fas[31:0]
