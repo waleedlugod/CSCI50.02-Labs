@@ -49,9 +49,8 @@ Xsub3 z[31:0] clk#32 f[31:0] dreg
 *******************************************************************************
 .subckt as32 a[31:0] b[31:0] op0 fas[31:0] n v z
 Xsub0 b[31:0] op0#32 p[31:0] xor2
-Xsub1 op0 1 c_in xor2
-Xsub2 a[31:0] p[31:0] c_in fas[31:0] c_out[31:30] add32
-Xsub3 fas[31] 1 n and2
+Xsub2 a[31:0] p[31:0] op0 fas[31:0] c_out[31:30] add32
+.connect fas31 n
 Xsub4 c_out[31] c_out[30] v xor2
 xsub5 fas[31:0] z zero32
 .ends

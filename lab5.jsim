@@ -19,11 +19,12 @@ Wop op0 nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
 
 *******************************************************************************
 
-.tran 300ns
-.plot a[31:0]
-.plot b[31:0]
+.tran 100ns
+.plot sd(a[31:0])
+.plot sd(b[31:0])
+.plot sd(fas[31:0])
 .plot op0
 .plot n
 .plot v
 .plot z
-.plot fas[31:0]
+
