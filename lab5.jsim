@@ -6,25 +6,60 @@
 
 .include "header.jsim"
 
-Xas a[31:0] b[31:0] op0 fas[31:0] n v z as32
-
-Wb b[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
-+ 0x00000001 0x00000001 0xFFFFFFFF 0xFFFFFFFF 0x5AAAAAAA 0x5AAAAAAA
+*******************************************************************************
+*Test Cases for 32-Bit Adder/Subtractor
+*******************************************************************************
+Xas0 a[31:0] b[31:0] op afas[31:0] n0 v0 z0 as32
 
 Wa a[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
-+ 0x00000001 0x00000001 0xFFFFFFFF 0xFFFFFFFF 0x5AAAAAAA 0x5AAAAAAA
++ 0 0x55555555 0 0x55555555 -1 0 0 0xAAAAAAAA 0 0xAAAAAAAA 1 -1 0x80000000 -1
 
-Wop op0 nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
-+ 0 1 0 1 0 1
+Wb b[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
++ 0 0 0x55555555 0x55555555 -1 0 -1 0 0xAAAAAAAA 0xAAAAAAAA -1 1 0x80000000 -1
+
+Wop op nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
++ 0 0 0 0 0 1 1 0 0 0 0 0 0 1
 
 *******************************************************************************
+*Test Cases for Comparison
+*******************************************************************************
+Xconstant1 subtract constant1
+Xas1 x[31:0] y[31:0] subtract bfas[31:0] n1 v1 z1 as32
+Xcmp32 n1 v1 z1 op2 op1 afcmp[31:0] cmp32
 
-.tran 100ns
+Wx x[31:0] nrz(0, 5, 60ns, 0ns, 0.001ns, 0.001ns)
++ 1 0x80000000 3 0x7FFFFFFF 3
+
+Wy y[31:0] nrz(0, 5, 60ns, 0ns, 0.001ns, 0.001ns)
++ -3 2 5 -2 3
+
+Wop1 op1 nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
++ 0 1 1 0 1 1 0 1 1 0 1 1 0 1 1 
+
+Wop2 op2 nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
++ 1 0 1 1 0 1 1 0 1 1 0 1 1 0 1 
+
+*******************************************************************************
+*Instantation of the Chaining Diagram
+*******************************************************************************
+Xchain0 a[31:0] b[31:0] op fas[31:0] n2 v2 z2 as32
+Xchain1 n2 v2 z2 op2 op1 fcmp[31:0] cmp32
+
+
+*******************************************************************************
+*Plots
+*******************************************************************************
+.tran 300ns
 .plot sd(a[31:0])
 .plot sd(b[31:0])
-.plot sd(fas[31:0])
-.plot op0
-.plot n
-.plot v
-.plot z
+.plot sd(afas[31:0])
+.plot op
+.plot n0
+.plot v0
+.plot z0
 
+.plot sd(x[31:0])
+.plot sd(y[31:0])
+.plot op1
+.plot op2
+.plot afcmp[31:0]
