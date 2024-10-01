@@ -73,9 +73,9 @@ Xsub2 n2out1 n2out0 z nor2
 * 32-bit Comparator
 *******************************************************************************
 .subckt cmp32 n v z op[2:1] fcmp[31:0]
+.connect fcmp[31:1] 0
 Xsub0 n v less_than xor2
 Xsub1 z op1 temp1 nand2
 Xsub2 less_than op2 temp2 nand2
 Xsub3 temp1 temp2 fcmp[0] nand2 
-Xsub4 fcmp[31:1] constant0
 .ends
