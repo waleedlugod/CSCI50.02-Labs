@@ -28,7 +28,7 @@ Xas1 x[31:0] y[31:0] subtract bfas[31:0] n1 v1 z1 as32
 Xcmp32 n1 v1 z1 op2 op1 afcmp[31:0] cmp32
 
 Wx x[31:0] nrz(0, 5, 60ns, 0ns, 0.001ns, 0.001ns)
-+ 1 0x80000000 3 0x7FFFFFFF 3
++ 2 0x80000000 3 0x7FFFFFFF 3
 
 Wy y[31:0] nrz(0, 5, 60ns, 0ns, 0.001ns, 0.001ns)
 + -3 2 5 -2 3
