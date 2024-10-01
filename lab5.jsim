@@ -7,7 +7,7 @@
 .include "header.jsim"
 
 *******************************************************************************
-* Test Cases for 32-Bit Adder/Subtractor
+* Test Cases for 32-Bit Adder/Subtractor and Comparator
 *******************************************************************************
 Wa a[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
 + 0 0x55555555 0 0x55555555 -1 0 0 0xAAAAAAAA 0 0xAAAAAAAA 1 -1 0x80000000 -1
