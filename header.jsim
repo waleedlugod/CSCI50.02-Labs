@@ -87,7 +87,7 @@ Xsub3 temp1 temp2 fcmp[0] nand2
 * pad val
 Xpad a31 op1 pad and2
 * flip bits?
-Xm op0#32 a[31:0] a[0:31] am[31:0] mux2
+Xm op0#32 a[0:31] a[31:0] am[31:0] mux2
 * shift 16
 Xs16 b4#32 am[31:0] pad#16 am[31:16] a16s[31:0] mux2
 * shift 8
