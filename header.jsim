@@ -99,5 +99,5 @@ Xs2 b1#32 a4s[31:0] pad#2 a4s[31:2] a2s[31:0] mux2
 * shift 1
 Xs1 b0#32 a2s[31:0] pad a2s[31:1] a1s[31:0] mux2
 * unflip bits?
-Xf op0#32 a1s[31:0] a1s[0:31] fshift[31:0] mux2
+Xf op0#32 a1s[0:31] a1s[31:0] fshift[31:0] mux2
 .ends
