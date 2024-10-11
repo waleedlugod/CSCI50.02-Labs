@@ -82,30 +82,33 @@ Xsub3 temp1 temp2 fcmp[0] nand2
 
 
 *******************************************************************************
-* 32-bit boolean
+* 32-bit Boolean
 *******************************************************************************
 .subckt bool32 a[31:0] b[31:0] op[3:0] fbool[31:0]
-Xid a[31:0] b[31:0] op[3]#32 op[2]#32 op[1]#32 op[0]#32 fbool[31:0] mux4
+Xid a[31:0] b[31:0] op0#32 op1#32 op2#32 op3#32 fbool[31:0] mux4
 .ends
 
 *******************************************************************************
 * 32-bit Shifter
 *******************************************************************************
 .subckt shift32 a[31:0] b[4:0] op[1:0] fshift[31:0]
-* pad val
 Xpad a31 op1 pad and2
-* flip bits?
 Xm op0#32 a[0:31] a[31:0] am[31:0] mux2
-* shift 16
 Xs16 b4#32 am[31:0] pad#16 am[31:16] a16s[31:0] mux2
-* shift 8
 Xs8 b3#32 a16s[31:0] pad#8 a16s[31:8] a8s[31:0] mux2
-* shift 4
 Xs4 b2#32 a8s[31:0] pad#4 a8s[31:4] a4s[31:0] mux2
-* shift 2
 Xs2 b1#32 a4s[31:0] pad#2 a4s[31:2] a2s[31:0] mux2
-* shift 1
 Xs1 b0#32 a2s[31:0] pad a2s[31:1] a1s[31:0] mux2
-* unflip bits?
 Xf op0#32 a1s[0:31] a1s[31:0] fshift[31:0] mux2
+.ends
+
+*******************************************************************************
+* 32-bit ALU
+*******************************************************************************
+.subckt alu32 a[31:0] b[31:0] alufn[5:0] f[31:0]
+Xas32 a[31:0] b[31:0] alufn0 fas[31:0] n v z as32
+Xshift32 a[31:0] b[4:0] alufn[1:0] fshift[31:0] shift32
+Xbool32 a[31:0] b[31:0] alufn[3:0] fbool[31:0] bool32
+Xcmp32 n v z alufn[2:1] fcmp[31:0] cmp32
+Xf alufn5#32 alufn4#32 fas[31:0] fshift[31:0] fbool[31:0] fcmp[31:0] f[31:0] mux4
 .ends

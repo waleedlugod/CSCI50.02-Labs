@@ -7,24 +7,22 @@
 .include "header.jsim"
 
 Wa a[31:0] nrz(0v,5.0v,20ns,0ns,.1ns,.1ns)
-+ -1 -1 -1 -1 -1 -1 -1
-+ -1 -1 -1 -1 -1 -1 -1
-+ -1 0 128 32 -6 99 2
++ -1 0x55555555 0xAAAAAAAA 1 -2 -1 -1 0x55555555 0 -1 0x55555555 0
++ -1 0x55555555 0 -1 0x55555555 0 -1 0x55555555 0 1 -1 -1 0x55555555 0xAAAAAAAA -1
++ 0x55555555 0xAAAAAAAA -1 -1 15 0 -1 15 0 -1 15 0
 
-Wb b[4:0] nrz(0v,5.0v,20ns,0ns,.1ns,.1ns)
-+ 16 8 4 2 1 0 31
-+ 16 8 4 2 1 0 31
-+ 16 8 4 2 1 0 31
+Wb b[31:0] nrz(0v,5.0v,20ns,0ns,.1ns,.1ns)
++ 1 0x55555555 0xAAAAAAAA 1 0 -1 -1 0xAAAAAAAA 0 -1 0xAAAAAAAA 0
++ -1 0xAAAAAAAA 0 -1 0xAAAAAAAA 0 -1 0xAAAAAAAA 0 31 15 0 24 24 31
++ 24 24 31 1 15 -256 1 15 -256 1 15 -256
 
-Wop op[1:0] nrz(0v,5.0v,20ns,0ns,.1ns,.1ns)
-+ 0 0 0 0 0 0 0
-+ 1 1 1 1 1 1 1
-+ 2 2 2 2 2 2 2
+Wf alufn[5:0] nrz(0v,5.0v,60ns,0ns,.1ns,.1ns)
++ 0 1 24 30 22 26 21 32 33 35 51 53 55
 
-Xshift32 a[31:0] b[4:0] op[1:0] fshift[31:0] shift32
+Xalu32 a[31:0] b[31:0] alufn[5:0] f[31:0] alu32
 
-.tran 420ns
-.plot b(a[31:0])
-.plot b[4:0]
-.plot op[1:0]
-.plot b(fshift[31:0])
+.tran 780ns
+.plot a[31:0]
+.plot b[31:0]
+.plot alufn[5:0]
+.plot f[31:0]
