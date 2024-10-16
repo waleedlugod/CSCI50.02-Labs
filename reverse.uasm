@@ -1,0 +1,39 @@
+.include beta.uasm
+
+| R0 = N.length
+| R1 = i = 1
+|
+| while(R1 < R0):
+|	R4 = N[R1]
+|	R5 = N[R0]
+|	N[R1] = R5
+|	N[R0] = R4
+|	R1++
+|	R0--
+
+LD(N, R0)
+CMOVE(1, R1)
+LOOP:
+	CMPLT(R1, R0, R2)
+	BF(R2, BREAK)
+	MULC(R0, 4, R2)
+	MULC(R1, 4, R3)
+	LD(R3, N, R4)
+	LD(R2, N, R5)
+	ST(R5, N, R3)
+	ST(R4, N, R2)
+	ADDC(R1, 1, R1)
+	SUBC(R0, 1, R0)
+	BR(LOOP)
+BREAK:
+	HALT()
+
+N: LONG(8)
+LONG(1)
+LONG(2)
+LONG(3)
+LONG(4)
+LONG(5)
+LONG(-9)
+LONG(0)
+LONG(-234)
