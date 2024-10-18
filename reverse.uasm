@@ -33,6 +33,7 @@ LOOP:
 BREAK:
 	HALT()
 
+. = 0x200
 N: LONG(8)
 LONG(1)
 LONG(2)
