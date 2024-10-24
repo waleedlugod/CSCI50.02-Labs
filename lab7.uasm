@@ -30,3 +30,171 @@ DATA:   LONG(5)             | length of the array
         LONG(0)
         LONG(6)
         LONG(-9)
+
+
+
+
+
+| 1. Sum of all even numbers in an array
+
+.include beta.uasm
+
+LD(r31, N, r0)          | r0 = N
+ADDC(r31, 0, r1)        | r1 is the counter
+ADDC(r31, 0, r5)        | r5 is the running sum
+
+while_loop:
+CMPLT(r1, r0, r2)
+BEQ(r2, done, r31)
+
+MULC(r1, 4, r2)
+LD(r2, DATA, r2)         | r2 = arr[i]
+
+ANDC(r2, 1, r3)          | Check if last bit is 1
+BNE(r3, skip_add, r31)  
+
+ADD(r5, r2, r5)
+ADDC(r1, 1, r1)
+BR(while_loop)
+
+skip_add:
+ADDC(r1, 1, r1)
+BR(while_loop)
+
+done:
+MULC(r1, 4, r2)
+ST(r5, arr, r2)
+HALT()
+
+.=0x200
+N: LONG(5)
+DATA: LONG(3)
+LONG(-5)
+LONG(12)
+LONG(-14)
+LONG(1)
+LONG(0)
+
+
+| 2. Reverse the elements of an array
+
+.include "beta.uasm"
+
+ADDC(r31, DATA, r0)              | r0 <--- left pointer; r1 <--- right pointer
+SUBC(r0, 4, r0)
+LD(r31, N, r1)
+MULC(r1, 4, r1)
+ADD(r0, r1, r1)
+ADDC(r1, 4, r1)      
+
+while_loop:
+CMPLT(r0, r1, r3)
+BEQ(r3, end, r31)
+
+ADDC(r0, 4, r0)
+SUBC(r1, 4, r1)
+
+LD(r0, 0, r4)
+LD(r1, 0, r5)
+ST(r5, 0, r0)
+ST(r4, 0, r1)
+BR(while_loop)
+
+end:
+HALT()
+
+.=0x200
+N: LONG(5)
+DATA: LONG(3)
+LONG(-5)
+LONG(12)
+LONG(-14)
+LONG(1)
+
+
+| 3. XOR Cipher with a Repeating Key
+
+.include beta.uasm
+
+LD(r31, DATA, r0)       | r0 <--- Key
+ADDC(r31, 4, r1)        
+LD(r1, DATA, r1)        | r1 <--- Plain text's length
+ADDC(r31, 1, r2)        | r2 <--- Counter
+
+
+while_loop:
+CMPLE(r2, r1, r3)
+BEQ(r3, done, r31)
+
+| Compute for offset
+MULC(r2, 4, r3)         
+ADDC(r3, 4, r3)         | r3 <--- offset
+LD(r3, DATA, r4)
+XOR(r0, r4, r4)         | r4 <--- encrypted plain text
+ST(r4, DATA, r3)
+
+ADDC(r2, 1, r2)
+BR (while_loop)
+
+done:
+HALT()
+
+
+.=0x200
+DATA: LONG(42)
+LONG(5)
+LONG(3)
+LONG(-5)
+LONG(12)
+LONG(-14)
+LONG(1)
+
+
+
+| 4. Fibonnaci
+.include beta.uasm
+
+LD(r31, DATA, r0)       | r0 <--- next
+ADDC(r31, 1, r1)        | r1 <--- counter
+
+while_loop:
+CMPLE(r1, r0, r2)
+BEQ(r2, end, r31)
+
+CMPEQC(r1, 1, r2)
+BNE(r2, append_zero, r31)
+CMPEQC(r1, 2, r2)
+BNE(r2, append_one, r31)
+
+SUBC(r1, 2, r2)         | Get the last two elements
+SUBC(r1, 1, r3)         | Then add them
+MULC(r2, 4, r2)          | Sum is in r2
+MULC(r3, 4, r3)
+LD(r2, DATA, r2)
+LD(r3, DATA, r3)
+ADD(r2, r3, r2)
+
+MULC(r1, 4, r3)        
+ST(r2, DATA, r3)
+ADDC(r1, 1, r1)
+BR(while_loop)
+
+append_zero:
+MULC(r1, 4, r2)         | r2 <--- offset
+ADD(r31, r31, r3)       | Load 0 into r3
+ST(r3, DATA, r2)
+ADDC(r1, 1, r1)
+BR(while_loop)
+
+append_one:
+MULC(r1, 4, r2)         | r2 <--- offset
+ADDC(r31, 1, r3)       | Load 0 into r3
+ST(r3, DATA, r2)
+ADDC(r1, 1, r1)
+BR(while_loop)
+
+end:
+HALT()
+
+.=0x200
+DATA: LONG(10)
