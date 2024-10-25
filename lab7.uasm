@@ -1,3 +1,8 @@
+| Lugod, Waleed
+| Sagusay, Joseph
+| Warain, John Victor
+
+
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 | This sample .uasm program processes an array of ints (defined at the DATA
 | portion of this file), multiplying each int by 2.
