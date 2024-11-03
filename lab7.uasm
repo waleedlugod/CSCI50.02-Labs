@@ -149,7 +149,7 @@ DATA:   LONG(42)
 | 4. Fibonnaci
 .include beta.uasm
 
-        LD(r31, DATA, r0)               | r0 <--- next
+        LD(r31, DATA, r0)               | r0 <--- N
         ADDC(r31, 1, r1)                | r1 <--- counter
 
 LOOP:   CMPLE(r1, r0, r2)
