@@ -153,7 +153,7 @@ DATA:   LONG(42)
         ADDC(r31, 1, r1)                | r1 <--- counter
 
 LOOP:   CMPLE(r1, r0, r2)
-        BEQ(r2, end, r31)
+        BEQ(r2, DONE, r31)
 
         CMPEQC(r1, 1, r2)               | On the first two iterations of the LOOP,
         BNE(r2, APPEND_ZERO, r31)       | the program writes 0 then 1.
@@ -185,7 +185,7 @@ APPEND_ONE: MULC(r1, 4, r2)             | r2 <--- offset
         ADDC(r1, 1, r1)
         BR(while_loop)
 
-end:
+DONE:
         HALT()
 
 .=0x200
