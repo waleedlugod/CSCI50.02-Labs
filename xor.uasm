@@ -34,4 +34,3 @@ DATA:   LONG(42)
         LONG(12)
         LONG(-14)
         LONG(1)
-| fix: incorrect logic
