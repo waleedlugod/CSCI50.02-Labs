@@ -26,12 +26,12 @@ SKIP:   ADDC(r1, 1, r1)
         BR(LOOP)
 
 DONE:
-        MULC(r1, 4, r2)
+        SHLC(r1, 2, r2)
         ST(r5, DATA, r2)
         HALT()
 
 .=0x200
-DATA:   LONG(-5)
+DATA:   LONG(5)
         LONG(3)
         LONG(-5)
         LONG(12)
