@@ -12,11 +12,11 @@
         ADDC(r1, 4, r1)      
 
 LOOP:
-        CMPLT(r0, r1, r3)       | Left and right pointers will converge to the middle element.
-        BEQ(r3, END, r31)       | Once left pointer > right pointer, the loop ends.
-
         ADDC(r0, 4, r0)
         SUBC(r1, 4, r1)
+
+        CMPLT(r0, r1, r3)       | Left and right pointers will converge to the middle element.
+        BEQ(r3, END, r31)       | Once left pointer > right pointer, the loop ends.
 
         LD(r0, 0, r4)
         LD(r1, 0, r5)
@@ -28,9 +28,10 @@ END:
         HALT()
 
 .=0x200
-DATA:   LONG(5) 
-        LONG(3)
-        LONG(-5)
-        LONG(12)
-        LONG(-14)
+DATA:   LONG(-1) 
         LONG(1)
+        LONG(2)
+        LONG(3)
+        LONG(4)
+        LONG(5)
+        LONG(6)
