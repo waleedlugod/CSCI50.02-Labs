@@ -6,15 +6,12 @@
 .include beta.uasm
 
         ADDC(r31, DATA, r0)     | r0 <--- left pointer; r1 <--- right pointer
-        LD(r31, DATA, r1)       | The left and right pointers are initially outside the array.
-        SHLC(r1, 2, r1)         | The first iteration of the loop will place the
-        ADD(r0, r1, r1)         | left and right pointers to the first and last elements respectively.
-        ADDC(r1, 4, r1)      
+        ADDC(r0, 4, r0)
+        LD(r31, DATA, r1)       | Initially, the left and right pointer point to 
+        SHLC(r1, 2, r1)         | the first and last element respectively.
+        ADDC(r1, DATA, r1)         | 
 
 LOOP:
-        ADDC(r0, 4, r0)
-        SUBC(r1, 4, r1)
-
         CMPLT(r0, r1, r3)       | Left and right pointers will converge to the middle element.
         BEQ(r3, END, r31)       | Once left pointer > right pointer, the loop ends.
 
@@ -22,16 +19,18 @@ LOOP:
         LD(r1, 0, r5)
         ST(r5, 0, r0)
         ST(r4, 0, r1)
+
+        ADDC(r0, 4, r0)
+        SUBC(r1, 4, r1)
         BR(LOOP)
 
 END:
         HALT()
 
 .=0x200
-DATA:   LONG(-1) 
-        LONG(1)
-        LONG(2)
+DATA:   LONG(5) 
         LONG(3)
-        LONG(4)
-        LONG(5)
-        LONG(6)
+        LONG(-5)
+        LONG(12)
+        LONG(-14)
+        LONG(1)

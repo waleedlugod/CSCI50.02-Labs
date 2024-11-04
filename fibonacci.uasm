@@ -45,4 +45,4 @@ DONE:
         HALT()
 
 .=0x200
-DATA: LONG(-10)
+DATA: LONG(10)
