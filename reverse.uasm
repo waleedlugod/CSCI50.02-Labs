@@ -9,7 +9,7 @@
         ADDC(r0, 4, r0)
         LD(r31, DATA, r1)       | Initially, the left and right pointer point to 
         SHLC(r1, 2, r1)         | the first and last element respectively.
-        ADDC(r1, DATA, r1)         | 
+        ADDC(r1, DATA, r1)          
 
 LOOP:
         CMPLT(r0, r1, r3)       | Left and right pointers will converge to the middle element.
