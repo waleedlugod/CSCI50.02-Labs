@@ -1,0 +1,43 @@
+| Lugod, Waleed
+| Sagusay, Joseph
+| Warain, John Victor
+
+| 1. Sum of all even numbers in an array
+.include beta.uasm
+
+        LD(r31, DATA, r0)       | r0 = N
+        ADDC(r31, 1, r1)        | r1 <--- counter
+        ADDC(r31, 0, r5)        | r5 <--- sum
+
+        CMPLE(r0, r1, r6)      | If N <= 0, HALT()
+        BT(r6, END, r31)
+
+LOOP:   CMPLE(r1, r0, r2)
+        BEQ(r2, DONE, r31)
+
+        SHLC(r1, 2, r2)
+        LD(r2, DATA, r2)        | r2 = arr[i]
+
+        ANDC(r2, 1, r3)         | Check if last bit is 1 (i.e., check if odd)
+        ADDC(r1, 1, r1)
+        BNE(r3, LOOP, r31)  
+
+        ADD(r5, r2, r5)
+        BR(LOOP)
+
+DONE:
+        SHLC(r0, 2, r2)
+        ST(r5, DATA, r2)
+        HALT()
+
+END:
+        HALT()
+
+.=0x200
+DATA:   LONG(5)
+        LONG(3)
+        LONG(-5)
+        LONG(12)
+        LONG(-14)
+        LONG(1)
+
