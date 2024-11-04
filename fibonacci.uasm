@@ -1,8 +1,8 @@
 | Lugod, Waleed
 | Sagusay, Joseph
 | Warain, John Victor
-| 4. Fibonnaci
 
+| 4. Fibonnaci
 .include beta.uasm
 
         LD(r31, DATA, r0)               | r0 <--- N
@@ -11,7 +11,7 @@
 LOOP:   CMPLE(r1, r0, r2)
         BEQ(r2, DONE, r31)
 
-        CMPEQC(r1, 1, r2)               | On the first two iterations of the LOOP,
+        CMPEQC(r1, 1, r2)               | On the first two iterations of the loop,
         BNE(r2, APPEND_ZERO, r31)       | the program writes 0 then 1.
         CMPEQC(r1, 2, r2)
         BNE(r2, APPEND_ONE, r31)
@@ -33,16 +33,16 @@ APPEND_ZERO: MULC(r1, 4, r2)            | r2 <--- offset
         ADD(r31, r31, r3)               | Load 0 into r3
         ST(r3, DATA, r2)
         ADDC(r1, 1, r1)
-        BR(while_loop)
+        BR(LOOP)
 
 APPEND_ONE: MULC(r1, 4, r2)             | r2 <--- offset
         ADDC(r31, 1, r3)                | Load 0 into r3
         ST(r3, DATA, r2)
         ADDC(r1, 1, r1)
-        BR(while_loop)
+        BR(LOOP)
 
 DONE:
         HALT()
 
 .=0x200
-DATA: LONG(10)
+DATA: LONG(-10)

@@ -4,7 +4,6 @@
 | 4. Fibonnaci
 
 | 3. XOR Cipher with a Repeating Key
-
 .include beta.uasm
 
         LD(r31, DATA, r0)       | r0 <--- Key
@@ -35,3 +34,4 @@ DATA:   LONG(42)
         LONG(12)
         LONG(-14)
         LONG(1)
+| fix: incorrect logic

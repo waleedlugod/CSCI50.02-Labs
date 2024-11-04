@@ -1,10 +1,8 @@
 | Lugod, Waleed
 | Sagusay, Joseph
 | Warain, John Victor
-| 4. Fibonnaci
 
 | 1. Sum of all even numbers in an array
-
 .include beta.uasm
 
         LD(r31, DATA, r0)       | r0 = N
@@ -18,7 +16,7 @@ LOOP:   CMPLE(r1, r0, r2)
         LD(r2, DATA, r2)        | r2 = arr[i]
 
         ANDC(r2, 1, r3)         | Check if last bit is 1 (i.e., check if odd)
-        BNE(r3, SKIP_ADD, r31)  
+        BNE(r3, SKIP, r31)  
 
         ADD(r5, r2, r5)
         ADDC(r1, 1, r1)
@@ -33,7 +31,7 @@ DONE:
         HALT()
 
 .=0x200
-DATA:   LONG(5)
+DATA:   LONG(-5)
         LONG(3)
         LONG(-5)
         LONG(12)

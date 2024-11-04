@@ -1,10 +1,8 @@
 | Lugod, Waleed
 | Sagusay, Joseph
 | Warain, John Victor
-| 4. Fibonnaci
 
 | 2. Reverse the elements of an array
-
 .include beta.uasm
 
         ADDC(r31, DATA, r0)     | r0 <--- left pointer; r1 <--- right pointer
