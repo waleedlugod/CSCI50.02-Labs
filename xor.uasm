@@ -15,13 +15,12 @@
 LOOP:   CMPLE(r2, r1, r3)
         BEQ(r3, DONE, r31)
 
-        SHLC(r2, 2, r3)         | Compute for offset 
-        ADDC(r3, 4, r3)         | r3 <--- offset
+        ADDC(r2, 1, r2)
+        SHLC(r2, 2, r3)         | r3 <--- offset
         LD(r3, DATA, r4)
         XOR(r0, r4, r4)         | r4 <--- encrypted plain text
         ST(r4, DATA, r3)
 
-        ADDC(r2, 1, r2)
         BR (LOOP)
 
 DONE:   HALT()
