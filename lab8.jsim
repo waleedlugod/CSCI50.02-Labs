@@ -93,6 +93,7 @@ Xwerf o werf 0 werf_ mux2
 *   succeeding lines = the control signals (14 bits each) for all 64 opcodes
 *                      times 2 (first half is for z = 0, second half for z = 1)
 * TODO: Fill these lines with the proper control signals for each opcode!
+* OPCODE ROWS DONE: 000, 001, 010, 011
 *******************************************************************************
 Xcontrol  vdd  0  0  z opcode[5:0] pcsel[1:0] ra2sel bsel wdsel[1:0] alufn[5:0] wr werf
 + $memory width=14 nlocations=128 contents=(
@@ -121,19 +122,6 @@ Xcontrol  vdd  0  0  z opcode[5:0] pcsel[1:0] ra2sel bsel wdsel[1:0] alufn[5:0] 
 .subckt join S T
   .connect S T
 .ends
-
-*******************************************************************************
-* The following .connect statements define what control signal goes to which
-* of the 14 bits of the control ROM's output. The bits are ordered as they
-* appear in the control logic diagram of your 50.01 slides.
-*******************************************************************************
-* Xjcontrola control[13:12] pcsel[1:0] join
-* Xjcontrolb control11      ra2sel     join
-* Xjcontrolc control10      bsel       join
-* Xjcontrold control[9:8]   wdsel[1:0] join
-* Xjcontrole control[7:2]   alufn[5:0] join
-* Xjcontrolf control1       wr         join
-* Xjcontrolg control0       werf       join
 
 *******************************************************************************
 * Also connect our instruction signal lines to our opcode, rc, ra, rb, and c.
