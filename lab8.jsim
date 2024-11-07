@@ -55,7 +55,7 @@
 Xmemory  vdd  0    0   pc[8:2]    inst[31:0]
 +        vdd  0    0   mema[8:2]  memrd[31:0]
 +        0    clk  wr  mema[8:2]  memwd[31:0]
-+ $memory width=32 nlocations=128 file="lab7.bin"
++ $memory width=32 nlocations=128 file="fibonacci.bin"
 
 *******************************************************************************
 * Xregisters is a register memory device to store your Beta registers r0 - r31.
@@ -94,7 +94,7 @@ Xregisters  vdd  0    0      ra1_[4:0]  rd1_[31:0]
 *                      times 2 (first half is for z = 0, second half for z = 1)
 * TODO: Fill these lines with the proper control signals for each opcode!
 *******************************************************************************
-Xcontrol  vdd  0  0  z opcode[5:0]  control[13:0]
+Xcontrol  vdd  0  0  z opcode[5:0] pcsel[1:0] ra2sel bsel wdsel[1:0] alufn[5:0] wr werf
 + $memory width=14 nlocations=128 contents=(
 +   0b11000000000000 0b11000000000000 0b11000000000000 0b11000000000000 0b11000000000000 0b11000000000000 0b11000000000000 0b11000000000000
 +   0b11000000000000 0b11000000000000 0b11000000000000 0b11000000000000 0b11000000000000 0b11000000000000 0b11000000000000 0b11000000000000
@@ -127,13 +127,13 @@ Xcontrol  vdd  0  0  z opcode[5:0]  control[13:0]
 * of the 14 bits of the control ROM's output. The bits are ordered as they
 * appear in the control logic diagram of your 50.01 slides.
 *******************************************************************************
-Xjcontrola control[13:12] pcsel[1:0] join
-Xjcontrolb control11      ra2sel     join
-Xjcontrolc control10      bsel       join
-Xjcontrold control[9:8]   wdsel[1:0] join
-Xjcontrole control[7:2]   alufn[5:0] join
-Xjcontrolf control1       wr         join
-Xjcontrolg control0       werf       join
+* Xjcontrola control[13:12] pcsel[1:0] join
+* Xjcontrolb control11      ra2sel     join
+* Xjcontrolc control10      bsel       join
+* Xjcontrold control[9:8]   wdsel[1:0] join
+* Xjcontrole control[7:2]   alufn[5:0] join
+* Xjcontrolf control1       wr         join
+* Xjcontrolg control0       werf       join
 
 *******************************************************************************
 * Also connect our instruction signal lines to our opcode, rc, ra, rb, and c.
