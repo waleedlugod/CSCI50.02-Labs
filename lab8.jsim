@@ -84,7 +84,7 @@ Xregisters  vdd  0    0      ra1_[4:0]  rd1_[31:0]
 
 Xsub1 wa[3:0] i_result and4
 Xsub2 wa4 i_result f_result and2
-Xsub3 f_result werf 0 werf_mux2
+Xsub3 f_result werf 0 werf_ mux2
 
 *******************************************************************************
 * Xcontrol is a read-only memory (ROM) that defines what to feed into the
