@@ -8,6 +8,11 @@
         LD(r31, DATA, r0)               | r0 <--- N
         ADDC(r31, 1, r1)                | r1 <--- counter
 
+        CMPLT(r0, r31, r7)
+        BF(r7, LOOP, r31)
+        MULC()
+
+
 LOOP:   CMPLE(r1, r0, r2)
         BEQ(r2, DONE, r31)
 
