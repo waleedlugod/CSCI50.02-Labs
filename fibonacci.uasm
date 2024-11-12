@@ -1,0 +1,53 @@
+| Lugod, Waleed
+| Sagusay, Joseph
+| Warain, John Victor
+
+| 4. Fibonnaci
+.include beta.uasm
+
+        LD(r31, DATA, r0)               | r0 <--- N
+        ADDC(r31, 1, r1)                | r1 <--- counter
+
+        CMPLT(r0, r31, r7)
+        BF(r7, LOOP, r31)
+        MULC()
+
+
+LOOP:   CMPLE(r1, r0, r2)
+        BEQ(r2, DONE, r31)
+
+        CMPEQC(r1, 1, r2)               | On the first two iterations of the loop,
+        BNE(r2, APPEND_ZERO, r31)       | the program writes 0 then 1.
+        CMPEQC(r1, 2, r2)
+        BNE(r2, APPEND_ONE, r31)
+
+        SUBC(r1, 2, r2)                 | Get the last two elements
+        SUBC(r1, 1, r3)                 | Then add them
+        MULC(r2, 4, r2)                 | Sum is in r2
+        MULC(r3, 4, r3)
+        LD(r2, DATA, r2)
+        LD(r3, DATA, r3)
+        ADD(r2, r3, r2)
+
+        MULC(r1, 4, r3)        
+        ST(r2, DATA, r3)
+        ADDC(r1, 1, r1)
+        BR(LOOP)
+
+APPEND_ZERO: MULC(r1, 4, r2)            | r2 <--- offset
+        ADD(r31, r31, r3)               | Load 0 into r3
+        ST(r3, DATA, r2)
+        ADDC(r1, 1, r1)
+        BR(LOOP)
+
+APPEND_ONE: MULC(r1, 4, r2)             | r2 <--- offset
+        ADDC(r31, 1, r3)                | Load 0 into r3
+        ST(r3, DATA, r2)
+        ADDC(r1, 1, r1)
+        BR(LOOP)
+
+DONE:
+        HALT()
+
+.=0x200
+DATA: LONG(10)
