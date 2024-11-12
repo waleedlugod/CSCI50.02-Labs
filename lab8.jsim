@@ -149,7 +149,7 @@ Xjpc clk[8:2] pc[8:2] join
 * connect them elsewhere!
 *******************************************************************************
 .connect vdd clk ra1_[4:0] ra2_[4:0] wa[4:0] wd[31:0] mema[8:0] memwd[31:0]
-. connect 0 z
+.connect 0 z
 
 *******************************************************************************
 * Plot some signals together (or else we won't have enough space in the plot
