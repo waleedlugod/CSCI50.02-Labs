@@ -4,9 +4,7 @@
 * "Warain, John Victor"
 *******************************************************************************
 
-.include "8clocks.jsim"
-.include "nominal.jsim"
-.include "stdcell.jsim"
+.include "header.jsim"
 
 *******************************************************************************
 * The $memory statement defines a memory device. Each memory device comes with
@@ -45,14 +43,14 @@
 
 *******************************************************************************
 * Xmemory is a 512-byte main memory containing both user instructions and data.
-*   1st line = read port for the next instruction to process (inst)
+*   1st line = read port for the next instruction to process (opcode ... c)
 *   2nd line = read port for LD instructions (memrd)
 *   3rd line = write port for ST instructions (memwd, controlled by wr signal)
 *   5th line = the memory statement itself
 * TODO: Copy your Beta program's BSim assembler output (.bin file) to your JSim
 *       folder and change the file= parameter accordingly!
 *******************************************************************************
-Xmemory  vdd  0    0   pc[8:2]    inst[31:0]
+Xmemory  vdd  0    0   pc[8:2]    opcode[5:0] rc[4:0] ra[4:0] rb[4:0] c[15:0]
 +        vdd  0    0   mema[8:2]  memrd[31:0]
 +        0    clk  wr  mema[8:2]  memwd[31:0]
 + $memory width=32 nlocations=128 file="lab8check.bin"
@@ -125,14 +123,8 @@ Xcontrol  vdd  0  0  z opcode[5:0] pcsel[1:0] ra2sel bsel wdsel[1:0] alufn[5:0] 
   .connect S T
 .ends
 
-*******************************************************************************
-* Also connect our instruction signal lines to our opcode, rc, ra, rb, and c.
-*******************************************************************************
-Xjinsta inst[31:26] opcode[5:0] join
-Xjinstb inst[25:21] rc[4:0]     join
-Xjinstc inst[20:16] ra[4:0]     join
-Xjinstd inst[15:11] rb[4:0]     join
-Xjinste inst[15:0]  c[15:0]     join
+* Reset waveform aligned to clk2
+Wreset reset nrz(0, 5, 10ns, 0ns, 0.001ns, 0.001ns) 1 0
 
 *******************************************************************************
 * Temporarily connect pc[] to the predefined clocks so that we can view each
