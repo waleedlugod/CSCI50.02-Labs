@@ -122,11 +122,8 @@ Xcontrol  vdd  0  0  z opcode[5:0] pcsel[1:0] ra2sel bsel wdsel[1:0] alufn[5:0] 
 * Reset waveform aligned to clk2
 *******************************************************************************
 Wreset reset nrz(0, 5, 10ns, 0ns, 0.001ns, 0.001ns) 1 0
-
-Xresetwr reset wr_ctrl 0 wr mux2
-Xresetwerf reset werf_ctrl 0 werf mux2
 * TODO: replace pcaddfour with output of pcsel mux4
-Xresetpc reset#7 pcaddfour[8:2] 0#7 pc_in[8:2] mux2
+Xreset reset#9 wr_ctrl werf_ctrl pcaddfour[8:2] 0#9 wr werf pc_in[8:2]
 
 *******************************************************************************
 * PC using clk2
