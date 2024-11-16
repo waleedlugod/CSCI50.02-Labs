@@ -133,6 +133,35 @@ Xpcaddfour pc[8:2] 0#7 pc_c_out[7:2] vdd pcaddfour[8:2] pc_c_out[8:2] fa
 .connect pc[1:0] 0
 
 *******************************************************************************
+* Selectors using MUX
+*******************************************************************************
+
+* TODO: Change/connect branch
+Xpcsel_ pcsel0 pcsel1 pcaddfour[8:2]  branch rd1_[8:2] pc[8:2] pc_res[8:2] mux4
+.connect pc[8:2] pc_res[8:2]
+
+Xra2sel_ ra2sel rb[4:0] rc[4:0] ra2_res[4:0] mux2 
+.connect ra2_[4:0] ra2_res[4:0]
+
+Xbsel_ bsel rd2_[31:0] 0#16 c[15:0] b_res[31:0] mux2
+.connect b_in[31:0] b_res[31:0] 
+
+Xalu_ rd1_[31:0] b_in[31:0] alufn[5:0] alu_res[31:0] alu32
+
+* TODO: Change/connect branch 
+Xwdsel0 wdsel0 branch alu_res[31:0] wd_res1 mux2
+Xwdsel1 wdsel1 wd_res1 memrd[31:0] wd_res2 mux2
+.connect wd_res2 wd
+
+
+
+*******************************************************************************
+* Z checker
+*******************************************************************************
+Xzchecker rd_[31:0] z_res zerochecker
+.connect z_res z
+
+*******************************************************************************
 * Temporarily connect other undefined signals.
 * Note that you will need to remove these signals from this section once you
 * connect them elsewhere!
