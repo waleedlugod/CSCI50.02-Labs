@@ -50,7 +50,7 @@
 *******************************************************************************
 Xmemory  vdd  0    0   pc[8:2]    opcode[5:0] rc[4:0] ra[4:0] c[15:0]
 +        vdd  0    0   mema[8:2]  memrd[31:0]
-+        0    clk  wr  mema[8:2]  memwd[31:0]
++        0    clk2  wr  mema[8:2]  memwd[31:0]
 + $memory width=32 nlocations=128 file="lab8check.bin"
 .connect c[15:11] rb[4:0]
 
@@ -64,7 +64,7 @@ Xmemory  vdd  0    0   pc[8:2]    opcode[5:0] rc[4:0] ra[4:0] c[15:0]
 *******************************************************************************
 Xregisters  vdd  0    0      ra1_[4:0]  rd1_[31:0]
 +           vdd  0    0      ra2_[4:0]  rd2_[31:0]
-+           0    clk  werf_  wa[4:0]    wd[31:0]
++           0    clk2  werf_  wa[4:0]    wd[31:0]
 + $memory width=32 nlocations=32 contents=(
 +   0 0 0 0 0 0 0 0
 +   0 0 0 0 0 0 0 0
@@ -122,8 +122,7 @@ Xcontrol  vdd  0  0  z opcode[5:0] pcsel[1:0] ra2sel bsel wdsel[1:0] alufn[5:0] 
 * Reset waveform aligned to clk2
 *******************************************************************************
 Wreset reset nrz(0, 5, 10ns, 0ns, 0.001ns, 0.001ns) 1 0
-* TODO: replace pcaddfour with output of pcsel mux4
-Xreset reset#9 wr_ctrl werf_ctrl pcaddfour[8:2] 0#9 wr werf pc_in[8:2]
+Xreset reset#9 wr_ctrl werf_ctrl pc_res[8:2] 0#9 wr werf pc_in[8:2] mux2
 
 *******************************************************************************
 * PC using clk2
@@ -136,29 +135,28 @@ Xpcaddfour pc[8:2] 0#7 pc_c_out[7:2] vdd pcaddfour[8:2] pc_c_out[8:2] fa
 * Selectors using MUX
 *******************************************************************************
 
-* TODO: Change/connect branch
-Xpcsel_ pcsel0 pcsel1 pcaddfour[8:2]  branch rd1_[8:2] pc[8:2] pc_res[8:2] mux4
-.connect pc[8:2] pc_res[8:2]
+Xpcsel_ pcsel0#7 pcsel1#7 pcaddfour[8:2] branch[8:2] rd1_[8:2] pc[8:2] pc_res[8:2] mux4
 
-Xra2sel_ ra2sel rb[4:0] rc[4:0] ra2_res[4:0] mux2 
-.connect ra2_[4:0] ra2_res[4:0]
+Xra2sel_ ra2sel#5 rb[4:0] rc[4:0] ra2_[4:0] mux2 
 
-Xbsel_ bsel rd2_[31:0] 0#16 c[15:0] b_res[31:0] mux2
-.connect b_in[31:0] b_res[31:0] 
+Xbsel_ bsel#32 rd2_[31:0] c15#16 c[15:0] b_res[31:0] mux2
 
-Xalu_ rd1_[31:0] b_in[31:0] alufn[5:0] alu_res[31:0] alu32
+Xalu_ rd1_[31:0] b_res[31:0] alufn[5:0] alu_res[31:0] alu32
 
-* TODO: Change/connect branch 
-Xwdsel0 wdsel0 branch alu_res[31:0] wd_res1 mux2
-Xwdsel1 wdsel1 wd_res1 memrd[31:0] wd_res2 mux2
-.connect wd_res2 wd
+Xwdsel0 wdsel0#32 0#23 pcaddfour[8:2] 0#2 alu_res[31:0] wd_resa[31:0] mux2
+Xwdsel1 wdsel1#32 wd_resa[31:0] memrd[31:0] wd[31:0] mux2
 
 
+*******************************************************************************
+* BEQ
+*******************************************************************************
+
+Xpcbeq pcaddfour[8:2] c15 c[7:2] 0#7 branch[8:2] branch_out[8:2] fa
 
 *******************************************************************************
 * Z checker
 *******************************************************************************
-Xzchecker rd_[31:0] z_res zerochecker
+Xzchecker rd1_[31:0] z_res zero32
 .connect z_res z
 
 *******************************************************************************
@@ -166,8 +164,8 @@ Xzchecker rd_[31:0] z_res zerochecker
 * Note that you will need to remove these signals from this section once you
 * connect them elsewhere!
 *******************************************************************************
-.connect vdd clk ra1_[4:0] ra2_[4:0] wa[4:0] wd[31:0] mema[8:0] memwd[31:0]
-.connect 0 z
+
+
 
 *******************************************************************************
 * Plot some signals together (or else we won't have enough space in the plot
