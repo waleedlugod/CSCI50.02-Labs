@@ -46,13 +46,15 @@
 *   1st line = read port for the next instruction to process (opcode ... c)
 *   2nd line = read port for LD instructions (memrd)
 *   3rd line = write port for ST instructions (memwd, controlled by wr signal)
-*   5th line = the memory statement itself
+*   4th line = the memory statement itself
 *******************************************************************************
 Xmemory  vdd  0    0   pc[8:2]    opcode[5:0] rc[4:0] ra[4:0] c[15:0]
 +        vdd  0    0   mema[8:2]  memrd[31:0]
 +        0    clk2  wr  mema[8:2]  memwd[31:0]
 + $memory width=32 nlocations=128 file="lab8check.bin"
 .connect c[15:11] rb[4:0]
+.connect memwd[31:0] rd2_[31:0]
+
 
 *******************************************************************************
 * Xregisters is a register memory device to store your Beta registers r0 - r31.
@@ -71,6 +73,8 @@ Xregisters  vdd  0    0      ra1_[4:0]  rd1_[31:0]
 +   0 0 0 0 0 0 0 0
 +   0 0 0 0 0 0 0 0
 + )
+.connect wa[4:0] c[15:11]  
+.connect ra1_[4:0] ra[4:0]  
 
 *******************************************************************************
 * If wa[4:0] = 0b11111 (31), the werf_ signal is forced OFF; otherwise, it
@@ -141,17 +145,17 @@ Xra2sel_ ra2sel#5 rb[4:0] rc[4:0] ra2_[4:0] mux2
 
 Xbsel_ bsel#32 rd2_[31:0] c15#16 c[15:0] b_res[31:0] mux2
 
-Xalu_ rd1_[31:0] b_res[31:0] alufn[5:0] alu_res[31:0] alu32
+Xalu_ rd1_[31:0] b_res[31:0] alufn[5:0] mema[31:0] alu32
 
-Xwdsel0 wdsel0#32 0#23 pcaddfour[8:2] 0#2 alu_res[31:0] wd_resa[31:0] mux2
-Xwdsel1 wdsel1#32 wd_resa[31:0] memrd[31:0] wd[31:0] mux2
+Xwdsel0_ wdsel0#32 0#23 pcaddfour[8:2] 0#2 mema[31:0] wd_resa[31:0] mux2
+Xwdsel1_ wdsel1#32 wd_resa[31:0] memrd[31:0] wd[31:0] mux2
 
 
 *******************************************************************************
 * BEQ
 *******************************************************************************
 
-Xpcbeq pcaddfour[8:2] c15 c[7:2] 0#7 branch[8:2] branch_out[8:2] fa
+Xpcbeq pcaddfour[8:2] c[15:9] 0#7 branch[8:2] branch_out[8:2] fa
 
 *******************************************************************************
 * Z checker
