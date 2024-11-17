@@ -52,8 +52,8 @@ Xmemory  vdd  0    0   pc[8:2]    opcode[5:0] rc[4:0] ra[4:0] c[15:0]
 +        vdd  0    0   mema[8:2]  memrd[31:0]
 +        0    clk2  wr  mema[8:2]  memwd[31:0]
 + $memory width=32 nlocations=128 file="lab8check.bin"
-.connect c[15:11] rb[4:0]
-.connect memwd[31:0] rd2_[31:0]
+Xcjoinrb c[15:11] rb[4:0] join
+Xmemwdjoinrd2_ memwd[31:0] rd2_[31:0] join
 
 
 *******************************************************************************
@@ -73,8 +73,8 @@ Xregisters  vdd  0    0      ra1_[4:0]  rd1_[31:0]
 +   0 0 0 0 0 0 0 0
 +   0 0 0 0 0 0 0 0
 + )
-.connect wa[4:0] c[15:11]  
-.connect ra1_[4:0] ra[4:0]  
+Xwajoinc wa[4:0] c[15:11] join
+Xra1_joinra ra1_[4:0] ra[4:0] join
 
 *******************************************************************************
 * If wa[4:0] = 0b11111 (31), the werf_ signal is forced OFF; otherwise, it
@@ -133,7 +133,7 @@ Xreset reset#9 wr_ctrl werf_ctrl pc_res[8:2] 0#9 wr werf pc_in[8:2] mux2
 *******************************************************************************
 Xpc pc_in[8:2] clk2#7 pc[8:2] dreg
 Xpcaddfour pc[8:2] 0#7 pc_c_out[7:2] vdd pcaddfour[8:2] pc_c_out[8:2] fa
-.connect pc[1:0] 0
+.connect 0 pc[1:0]
 
 *******************************************************************************
 * Selectors using MUX
